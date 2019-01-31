@@ -9,15 +9,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/arun32me/afoneptune.git"
+    "url": "git+ssh://git@github.com/arun32me/afo-neptune-build.git"
   },
   "author": "Arun Lalithambaran",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/arun32me/afoneptune/issues"
+    "url": "https://github.com/arun32me/afo-neptune-build/issues"
   },
-  "homepage": "https://github.com/arun32me/afoneptune#readme",
-  "dependencies": {
-    "express": "^4.16.4"
-  }
+  "homepage": "https://github.com/arun32me/afo-neptune-build#readme"
 }
