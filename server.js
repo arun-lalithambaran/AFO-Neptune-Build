@@ -1,19 +1,9 @@
-//  OpenShift sample Node application
-var express = require('express');
-// var fs      = require('fs');
-var app     = express();
-// var eps     = require('ejs');
+const http = require('http');
+const app = require('./app');
+const port = process.env.PORT || 8080;
+const ip   = process.env.IP || '0.0.0.0';
+const server = http.createServer(app);
 
-// app.engine('html', require('ejs').renderFile);
-
-var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
-var ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
-
-app.get('/info', function(req, res) {
-  res.send(`Host IP : ${ip}, Port : ${port}`);
-});
-
-app.use(express.static('public'));
-
-app.listen(port, ip);
-console.log('Server running on ' + ip + ':' + port);
+server.listen(port, ip, () => {
+    console.log("Server listening on port " + port);
+})
