@@ -2,11 +2,12 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
+const morgan = require('morgan');
 
-mongoose.connect('mongodb+srv://arun32me:58515699@neptnecluster-bubxx.mongodb.net/neptune-base?retryWrites=true',
+mongoose.connect('mongodb://localhost:27017/neptune-base?retryWrites=true',
 { useNewUrlParser: true }
 )
-
+app.use(morgan('combined'));
 app.use(cors());
 
 // app.use((req, res, next) => {
