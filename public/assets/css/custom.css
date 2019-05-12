@@ -1,3 +1,10 @@
-.act-icon {
-    
+.c_actions .fa {
+    font-size: 18px;
+    cursor: pointer;
+}
+.fa-trash-o {
+    color: rgb(255, 79, 79);
+}
+.pull-right {
+    margin-right: 15px;
 }
