@@ -8,3 +8,6 @@
 .pull-right {
     margin-right: 15px;
 }
+div.pull-right {
+    margin-right: 0!important;
+}
