@@ -7,7 +7,7 @@ const taskSchema = mongoose.Schema({
     details: { type: String, required: true},
     progress: { type: Number, default: 0},
     status: { type: String, required: true},
-    startDate: { type: String, default: new Date()},
+    startDate: { type: String, required: false},
     endDate: { type: String, required: false}
 })
 

@@ -3,20 +3,56 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 const Task = require('../../models/tasks/task');
+const PriorityList = require('../../models/tasks/priority-list');
+const StatusList = require('../../models/tasks/status-list');
 
 router.get('/list', (req, res, next) => {
-    Task.find()
-    .exec()
-    .then(docs => {
-        res.status(200).json({
-            result: docs
-        })
+    const page = +req.query.page || 1;
+    const perPage = +req.query.perPage || 10;
+    let data = {
+        taskList: null,
+        priorityList: null,
+        statusList: null
+    }
+    Promise.all([
+        Task.find().skip(page == 1 ? 0 : ((page - 1 >= 0 ? page - 1 : 0) * perPage)).limit(perPage).exec(),
+        Task.countDocuments({}).exec(),
+        PriorityList.find().exec(),
+        StatusList.find().exec()
+    ]).then(result => {
+        data.taskList = {
+            page: page,
+            perPage: perPage,
+            totalRecords: result[1],
+            results: result[0]
+        }
+        data.priorityList = result[2];
+        data.statusList = result[3];
+        res.status(200).json(data);
     })
     .catch(error => {
         res.status(500).json({
             error
         })
     })
+    // Task.find()
+    // .exec()
+    // .then(result => {
+    //     data.result = result;
+    //     PriorityList.find()
+    //     .exec()
+    //     .then(priority => {
+    //         data.priorityList = priority;
+    //         res.status(200).json(data);
+    //     })
+        
+    // })
+    // .catch(error => {
+    //     res.status(500).json({
+    //         error
+    //     })
+    // })
+    
 })
 
 router.get('/get/:id', (req, res, next) => {
@@ -92,5 +128,78 @@ router.post('/save', (req, res, next) => {
         })
     })
 })
+
+router.get('/priorityList', (req, res, next) => {
+    PriorityList.find()
+    .exec()
+    .then(docs => {
+        res.status(200).json({
+            result: docs
+        })
+    })
+    .catch(error => {
+        res.status(500).json({
+            message: "Cant get data!",
+            error: error
+        })
+    })
+})
+
+router.get('/statusList', (req, res, next) => {
+    StatusList.find()
+    .exec()
+    .then(docs => {
+        res.status(200).json({
+            result: docs
+        })
+    })
+    .catch(error => {
+        res.status(500).json({
+            message: "Cant get data!",
+            error: error
+        })
+    })
+})
+
+// router.post('/savePriority', (req, res, next) => {
+//     const priorityList = new PriorityList({
+//         _id: mongoose.Types.ObjectId(),
+//         id: req.body.id,
+//         value: req.body.value
+//     })
+//     priorityList.save()
+//     .then(result => {
+//         res.status(200).json({
+//             message: 'Got the data',
+//             result: result
+//         })
+//     })
+//     .catch(error => {
+//         res.status(500).json({
+//             message: "Cannot save data",
+//             error: error
+//         })
+//     })
+// })
+// router.post('/saveStatus', (req, res, next) => {
+//     const statusList = new NewStatusList({
+//         _id: mongoose.Types.ObjectId(),
+//         id: req.body.id,
+//         value: req.body.value
+//     })
+//     statusList.save()
+//     .then(result => {
+//         res.status(200).json({
+//             message: 'Got the data',
+//             result: result
+//         })
+//     })
+//     .catch(error => {
+//         res.status(500).json({
+//             message: "Cannot save data",
+//             error: error
+//         })
+//     })
+// })
 
 module.exports = router;
