@@ -8,6 +8,12 @@
 .pull-right {
     margin-right: 15px;
 }
+.pull-left {
+    margin-left: 15px;
+}
 div.pull-right {
     margin-right: 0!important;
+}
+div.pull-left {
+    margin-left: 0!important;
 }

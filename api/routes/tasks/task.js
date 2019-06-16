@@ -9,25 +9,30 @@ const StatusList = require('../../models/tasks/status-list');
 router.get('/list', (req, res, next) => {
     const page = +req.query.page || 1;
     const perPage = +req.query.perPage || 10;
+    const status = req.query.status;
+    const priority = req.query.priority;
+    const filter = {};
+    if(status) filter['status'] = status;
+    if(priority) filter['priority'] = priority;
     let data = {
         taskList: null,
         priorityList: null,
         statusList: null
     }
     Promise.all([
-        Task.find().skip(page == 1 ? 0 : ((page - 1 >= 0 ? page - 1 : 0) * perPage)).limit(perPage).exec(),
-        Task.countDocuments({}).exec(),
+        Task.find(filter).skip(page == 1 ? 0 : ((page - 1 >= 0 ? page - 1 : 0) * perPage)).limit(perPage).exec(),
         PriorityList.find().exec(),
-        StatusList.find().exec()
+        StatusList.find().exec(),
+        Task.countDocuments({}).exec(),
     ]).then(result => {
         data.taskList = {
             page: page,
             perPage: perPage,
-            totalRecords: result[1],
+            totalRecords: result[3],
             results: result[0]
         }
-        data.priorityList = result[2];
-        data.statusList = result[3];
+        data.priorityList = result[1];
+        data.statusList = result[2];
         res.status(200).json(data);
     })
     .catch(error => {
@@ -35,24 +40,23 @@ router.get('/list', (req, res, next) => {
             error
         })
     })
-    // Task.find()
-    // .exec()
-    // .then(result => {
-    //     data.result = result;
-    //     PriorityList.find()
-    //     .exec()
-    //     .then(priority => {
-    //         data.priorityList = priority;
-    //         res.status(200).json(data);
-    //     })
-        
-    // })
-    // .catch(error => {
-    //     res.status(500).json({
-    //         error
-    //     })
-    // })
-    
+})
+
+router.get('/getSelectorData', (req, res, next) => {
+    let data = {
+        statusList: null,
+        priorityList: null
+    }
+    Promise.all([
+        PriorityList.find().exec(),
+        StatusList.find().exec()
+    ]).then(result => {
+        data.priorityList = result[0];
+        data.statusList = result[1];
+        res.status(200).json(data);
+    }).catch(error => {
+        res.status(500).json({error});
+    })
 })
 
 router.get('/get/:id', (req, res, next) => {
