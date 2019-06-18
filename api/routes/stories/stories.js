@@ -61,11 +61,29 @@ router.post('/save', (req, res, next) => {
 
     story.save().then(result => {
         res.status(200).json({
-            result: "Story saved successfully."
+            result: "Story saved successfully.",
+            storyId: result._id
         })
     })
     .catch(error => {
         res.status(500).json({
+            error
+        })
+    })
+})
+
+router.delete('/delete/:id', (req, res, next) => {
+    Story.remove({_id: req.params.id})
+    .exec()
+    .then(doc => {
+        res.status(200).json({
+            message: "Story deleted succesfully.",
+            result: doc
+        })
+    })
+    .catch(error => {
+        res.status(500).json({
+            message: "Failed to delete story.",
             error
         })
     })
