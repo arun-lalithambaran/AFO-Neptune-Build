@@ -1,23 +1,19 @@
-.nav-item {
+.c_actions .fa {
+    font-size: 18px;
     cursor: pointer;
 }
-
-.overlay {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.7);
-    transition: opacity 500ms;
-    opacity: 1;
-    z-index: 999;
-    padding-top: 70px;
-    overflow: auto;
-  }
-  
-  @media only screen and ( max-width : 768px ) {
-    .overlay {
-      padding-top: 150px;
-    }
-  }
+.fa-trash-o {
+    color: rgb(255, 79, 79);
+}
+.pull-right {
+    margin-right: 15px;
+}
+.pull-left {
+    margin-left: 15px;
+}
+div.pull-right {
+    margin-right: 0!important;
+}
+div.pull-left {
+    margin-left: 0!important;
+}
