@@ -4,10 +4,11 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 
+const database_url = process.env.PROD_DATABASE_URL || 'mongodb+srv://arun32me:58515699@neptnecluster-bubxx.mongodb.net/neptune-test-base?retryWrites=true';
 // mongodb+srv://arun32me:58515699@neptnecluster-bubxx.mongodb.net/test?retryWrites=true
 // mongodb://localhost:27017/neptune-base?retryWrites=true
-mongoose.connect('mongodb+srv://arun32me:58515699@neptnecluster-bubxx.mongodb.net/neptune-base?retryWrites=true',
-{ useNewUrlParser: true }
+mongoose.connect(database_url,
+    { useNewUrlParser: true }
 )
 
 app.use(morgan('combined'));
